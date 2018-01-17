@@ -1,0 +1,9 @@
+.DS_Store
+.ipynb_checkpoints/
+logs/
+.idea/
+__pycache__
+msgs.log
+
+
+
