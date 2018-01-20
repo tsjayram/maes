@@ -8,7 +8,7 @@ from ntm.controller import Controller
 
 class NTMCell(Layer):
     def __init__(self, tm_output_units, output_trainable, tm_state_units,
-                 n_read_heads, n_write_heads, is_cam,
+                 n_read_heads, n_write_heads, is_cam, num_shift,
                  N, M, name='NTMCell'):
         super(NTMCell, self).__init__(name=name)
 
@@ -18,6 +18,7 @@ class NTMCell(Layer):
         self.n_read_heads = n_read_heads
         self.n_write_heads = n_write_heads
         self.is_cam = is_cam
+        self.num_shift = num_shift
         self.N = N
         self.M = M
         self.read_head = None
@@ -32,9 +33,9 @@ class NTMCell(Layer):
         # build the read/write heads and controller
         tm_in_dim = input_shape[-1]
         self.read_head = ReadHead(self.n_read_heads, self.tm_state_units,
-                                  self.M, self.is_cam)
+                                  self.is_cam, self.num_shift, self.M)
         self.write_head = WriteHead(self.n_write_heads, tm_in_dim, self.tm_state_units,
-                                    self.M, self.is_cam)
+                                    self.is_cam, self.num_shift, self.M)
         self.controller = Controller(self.tm_output_units, self.output_trainable, tm_in_dim,
                                      self.tm_state_units, self.n_read_heads, self.M)
 

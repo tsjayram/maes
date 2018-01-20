@@ -5,7 +5,7 @@ from ntm.ntm_cell import NTMCell
 
 class NTMLayer(RNN):
     def __init__(self, tm_output_units, tm_state_units,
-                 n_read_heads, n_write_heads, is_cam, N, M,
+                 n_read_heads, n_write_heads, is_cam, num_shift, N, M,
                  return_sequences=True, return_state=False,
                  stateful=False,
                  name='NTMLayer'):
@@ -25,7 +25,8 @@ class NTMLayer(RNN):
 
         self.ntm_cell = NTMCell(self.tm_output_units, self.output_trainable,
                                 self.tm_state_units,
-                                self.n_read_heads, self.n_write_heads, self.is_cam,
+                                self.n_read_heads, self.n_write_heads,
+                                self.is_cam, num_shift,
                                 self.N, self.M)
         super(NTMLayer, self).__init__(self.ntm_cell, return_sequences=return_sequences,
                                        return_state=return_state, stateful=stateful,

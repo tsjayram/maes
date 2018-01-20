@@ -14,17 +14,15 @@ class Head:
              for s, (n, a) in params]
         return Model(inputs=x, outputs=y)
 
-    def __init__(self, n_heads, tm_state_units, M, is_cam, name='Read'):
+    def __init__(self, n_heads, tm_state_units, is_cam, num_shift, M, name='Read'):
         self.n_heads = n_heads
         self.is_cam = is_cam
         # build a controller for all the heads given size and activation for each parameter
+        params = [('s', (num_shift, lambda z: softmax(softplus(z)))),
+                  ('gamma', (1, lambda z: 1 + softplus(z)))]
         if self.is_cam:
-            params = [('k', (M, tanh)), ('beta', (1, softplus)), ('g', (1, sigmoid)),
-                      ('s', (3, lambda z: softmax(softplus(z)))),
-                      ('gamma', (1, lambda z: 1 + softplus(z)))]
-        else:
-            params = [('s', (3, lambda z: softmax(softplus(z)))),
-                      ('gamma', (1, lambda z: 1 + softplus(z)))]
+            params = [('k', (M, tanh)), ('beta', (1, softplus)), ('g', (1, sigmoid))] + params
+
         self.head_ctrl = self._model2d((tm_state_units,), params, name)
         self.trainable_weights = self.head_ctrl.trainable_weights
 
@@ -50,8 +48,8 @@ ReadHead = Head
 
 
 class WriteHead(Head):
-    def __init__(self, n_heads, tm_in_dim, tm_state_units, M, is_cam, name='Write'):
-        super(WriteHead, self).__init__(n_heads, tm_state_units, M, is_cam, name)
+    def __init__(self, n_heads, tm_in_dim, tm_state_units, is_cam, num_shift, M, name='Write'):
+        super(WriteHead, self).__init__(n_heads, tm_state_units, is_cam, num_shift, M, name)
         params = [('e', (M, sigmoid)), ('a', (M, None))]
         self.head_ctrl_write = self._model2d((tm_in_dim + tm_state_units,), params, name)
         self.trainable_weights = self.trainable_weights + self.head_ctrl_write.trainable_weights
