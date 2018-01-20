@@ -82,8 +82,29 @@ def build_test(N_test, test_batch_size, test_len):
     return ntm, data_gen
 
 
+@ex.capture
+def check_status_gen(train_max_len, report_interval):
+    best_loss = 1.0
+    threshold = (train_max_len * 3) // 4
+    test_flag = False
+    improved_loss = False
+    while True:
+        args = (yield test_flag, improved_loss)
+        epoch, train_length, loss = args
+        if (loss < best_loss) and (train_length > threshold):
+            improved_loss = True
+            best_loss = loss
+        else:
+            improved_loss = False
+
+        if (epoch % report_interval == 0) or improved_loss:
+            test_flag = True
+        else:
+            test_flag = False
+
+
 @ex.automain
-def main(epochs, report_interval, _log, seed):
+def main(epochs, _log, seed):
     _log.info('Seed = {}'.format(seed))
     exp_config_str = get_exp_config()
     _log.info('\n' + exp_config_str)
@@ -91,6 +112,9 @@ def main(epochs, report_interval, _log, seed):
     ntm_train, train_data_gen = build_train()
     ntm_test, test_data_gen = build_test()
     _log.info(ntm_train.pretty_print_str())
+
+    check_status = check_status_gen()
+    next(check_status)
 
     with open(TRAIN_LOG, 'w', 1) as train_file, \
             open(TEST_LOG, 'w', 1) as test_file, \
@@ -100,4 +124,4 @@ def main(epochs, report_interval, _log, seed):
         pause()
         train_ntm(ntm_train, train_data_gen, train_file,
                   ntm_test, test_data_gen, test_file, model_wts_file,
-                  epochs, report_interval, _log)
+                  epochs, check_status, _log)
