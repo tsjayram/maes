@@ -6,7 +6,7 @@ from sacred import Experiment
 from skills.recall.ntm_recall import NTM_Recall
 
 
-LOG_DIR = 'logs/2018-01-16__12_04_47_PM'
+LOG_DIR = 'permanent_logs/2018-01-16__12_04_47_PM'
 MODEL_WTS = LOG_DIR + '/model_weights.hdf5'
 RUNS_DIR = LOG_DIR + '/runs'
 os.makedirs(RUNS_DIR, exist_ok=True)
