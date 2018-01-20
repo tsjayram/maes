@@ -23,6 +23,9 @@ class NTM(ABC):
     def set_weights(self, weights):
         self.model.set_weights(weights)
 
+    def get_weights(self):
+        return self.model.get_weights()
+
     def run(self, inputs, target):
         batch_size = target.shape[0]
         out = self.model.predict(inputs, batch_size=batch_size)
@@ -37,12 +40,15 @@ class NTM(ABC):
 
     def params_gen(self):
         model = self.model
-        for i, (tensor, weight) in enumerate(zip(model.trainable_weights, model.get_weights())):
-            # name hack relies on tensorflow backend
-            tokens = tensor.name.split('/')
-            tokens = ['{:02d}'.format(i + 1)] + tokens  # add index
-            name = '___'.join(tokens)
-            yield tensor, name, weight
+        n = 1
+        for layer in model.layers:
+            for tensor, weight in zip(layer.weights, layer.get_weights()):
+                # name hack relies on tensorflow backend
+                tokens = tensor.name.split('/')
+                tokens = ['{:02d}'.format(n)] + tokens  # add index
+                name = '___'.join(tokens)
+                n = n + 1
+                yield tensor, name, weight
 
     def params_str(self):
         h_line = '*' * 80 + '\n'
