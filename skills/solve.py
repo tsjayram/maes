@@ -46,7 +46,6 @@ class NTM_Solve(NTM):
         self._mem_model = Model(inputs=ntm_inputs, outputs=ntm_outputs)
         return self._mem_model
 
-
     @property
     def mem_model(self):
         if self._mem_model is None:
