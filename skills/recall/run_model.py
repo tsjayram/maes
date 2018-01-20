@@ -21,8 +21,8 @@ def run_config():
     batch_size = 32
     length = 64
     all_epochs = False
-    epoch_min = 7000
-    epoch_max = 50000
+    epoch_min = 18000
+    epoch_max = 21000
 
 
 @ex.capture

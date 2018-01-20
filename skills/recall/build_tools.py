@@ -6,7 +6,7 @@ from sacred import Experiment
 
 from skills.solve import NTM_Solve
 
-LOG_ROOT = '../../logs/'
+LOG_ROOT = '../../permanent_logs/'
 MEM_FREEZE_WTS = LOG_ROOT + 'memorize/2018-01-16__12_04_47_PM/model_weights.hdf5'
 
 ex = Experiment('Recall')
