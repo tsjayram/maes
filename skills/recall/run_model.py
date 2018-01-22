@@ -6,7 +6,7 @@ import h5py
 from skills.recall.build_tools import ex, LOG_ROOT
 from skills.recall.build_tools import build_ntm, build_data_gen
 
-LOG_DIR = LOG_ROOT + 'recall/2018-01-19__05_56_44_PM/'
+LOG_DIR = LOG_ROOT + 'recall/2018-01-20__10_46_34_AM/'
 MODEL_WTS = LOG_DIR + 'model_weights.hdf5'
 RUNS_DIR = LOG_DIR + 'runs/'
 os.makedirs(RUNS_DIR, exist_ok=True)
@@ -21,8 +21,8 @@ def run_config():
     batch_size = 32
     length = 64
     all_epochs = False
-    epoch_min = 18000
-    epoch_max = 21000
+    epoch_min = 11400
+    epoch_max = 22500
 
 
 @ex.capture
