@@ -1,9 +1,8 @@
 import numpy as np
-
 from keras.layers import Input
 from keras.models import Model
 
-from ntm.ntm import NTM
+from model.ntm import NTM
 from ntm.ntm_layer import NTMLayer
 
 

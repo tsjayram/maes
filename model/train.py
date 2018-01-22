@@ -1,14 +1,16 @@
 import sys
+
 import numpy as np
 from keras.metrics import binary_crossentropy
-from skills.metrics import alt_binary_accuracy
+
+from model.metrics import alt_binary_accuracy
 
 np.set_printoptions(threshold=np.nan)
 
 
 def train_ntm(ntm_train, train_data_gen, train_file,
               ntm_test, test_data_gen, test_file, model_wts_file,
-              epochs, check_status, log):
+              epochs, train_status, log):
 
     ntm_train.model.compile(loss=binary_crossentropy, optimizer='rmsprop',
                             metrics=[alt_binary_accuracy])
@@ -39,7 +41,7 @@ def train_ntm(ntm_train, train_data_gen, train_file,
         train_file.write(format_str.format(epoch, acc, train_length, loss))
 
         args = (epoch, train_length, loss)
-        test_flag, improved_loss = check_status.send(args)
+        test_flag, improved_loss = train_status.send(args)
 
         if improved_loss:
             train_file.write(', *\n')
@@ -65,7 +67,6 @@ def train_ntm(ntm_train, train_data_gen, train_file,
             log.debug(model_wt_str)
             sys.exit('Exiting because of nan in test')
 
-        test_length = test_target.shape[1]
         log.info('\n==>Accuracy with length {} was: {:12.10f}'.format(test_length, acc))
         test_file.write('{:05d}, {:12.10f}'.format(epoch, acc))
 
