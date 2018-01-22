@@ -6,7 +6,7 @@ from tasks.solve import NTM_Solve
 # change below based on task ----
 TASK_NAME = 'equality'
 ex = Experiment(TASK_NAME)
-LOG_ROOT = '../../logs/'
+LOG_ROOT = '../../permanent_logs/'
 
 
 @ex.config
@@ -41,6 +41,7 @@ def build_data_gen(ntm, batch_size, min_len, max_len, _rnd):
         input_xor = input_xor * target_mask[:, np.newaxis, np.newaxis]
         second_input = np.logical_xor(first_input, input_xor).astype(float)
         target = np.any(input_xor, axis=(1, 2))
+        target = target[:, np.newaxis]
 
         inputs = [mem_input, second_input]
         init_state = mem_init_state + recall_init_state[:-1]
