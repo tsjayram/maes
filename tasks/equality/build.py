@@ -42,7 +42,6 @@ def build_data_gen(ntm, batch_size, min_len, max_len, _rnd):
         second_input = np.logical_xor(first_input, input_xor).astype(float)
         target = np.any(input_xor, axis=(1, 2))
         target = target[:, np.newaxis]
-
         inputs = [mem_input, second_input]
         init_state = mem_init_state + recall_init_state[:-1]
         yield inputs, init_state, target, mem_length
