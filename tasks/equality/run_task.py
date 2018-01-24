@@ -32,8 +32,8 @@ RANDOM_SEED = 12345
 
 
 @ex.capture
-def make_log(seed, length, N):
-    logfile = '/seed={}_L={:04d}_N={:04d}.log'.format(seed, length, N)
+def make_log(seed, length, N, batch_size):
+    logfile = '/seed={}_L={:04d}_N={:04d}_bs={:04d}.log'.format(seed, length, N, batch_size)
     return logfile
 
 
