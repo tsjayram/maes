@@ -20,7 +20,7 @@ def model_config():
 
 @ex.capture
 def build_ntm(element_size, tm_state_units, is_cam, num_shift, N, M):
-    in_dim = element_size
+    in_dim = element_size + 1
     out_dim = element_size
     aux_in_dim = 1
     ret_seq = True
@@ -36,7 +36,7 @@ def build_data_gen(ntm, batch_size, min_len, max_len, _rnd):
     aux_in_dim = 1
     while True:
         mem_input, mem_init_state, mem_length = next(mem_data_gen)
-        target = mem_input[:, :-1, :-1]
+        target = mem_input[:, 1:, :-1]
 
         aux_seq = np.ones((batch_size, target.shape[1], aux_in_dim)) * 0.5
         inputs = [mem_input, aux_seq]
