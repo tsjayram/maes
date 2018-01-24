@@ -38,7 +38,6 @@ class NTM_Solve(NTM):
                          self.N, self.M,
                          return_sequences=False, return_state=True,
                          name='NTM_Layer_Memorize')
-        print(self.in_dim)
         tm_input_seq = Input(shape=(None, self.in_dim + 1))
         input_state = [Input(shape=(s,)) for s in layer.state_size]
         ntm_outputs = layer(tm_input_seq, initial_state=input_state)
