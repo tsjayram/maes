@@ -2,6 +2,8 @@
 from tasks.recall.build import LOG_ROOT, ex
 
 MEM_FREEZE_TIME = '2018-01-23__08_04_48_PM'
+MEM_EPOCH = 20936
+
 RANDOM_SEED = 12345
 REPORT_INTERVAL = 100
 
@@ -24,7 +26,7 @@ def train_test_config():
 def mem_weights():
     use_frozen_wts = True
     mem_freeze_wts_file = LOG_ROOT + 'memorize/' + MEM_FREEZE_TIME + '/model_weights.hdf5'
-    mem_epoch = 20936
+    mem_epoch = MEM_EPOCH
 
 # end change ---
 

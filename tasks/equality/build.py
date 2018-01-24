@@ -35,7 +35,7 @@ def build_data_gen(ntm, batch_size, min_len, max_len, _rnd):
     recall_init_state = ntm.solve_layer.init_state(batch_size)
     while True:
         mem_input, mem_init_state, mem_length = next(mem_data_gen)
-        first_input = mem_input[:, :-1, :-1]
+        first_input = mem_input[:, 1:, :-1]
         target_mask = _rnd.binomial(1, 0.5, (batch_size,))
         input_xor = _rnd.binomial(1, 0.5, first_input.shape)
         input_xor = input_xor * target_mask[:, np.newaxis, np.newaxis]
