@@ -13,7 +13,7 @@ def train_test_config():
     N_train = 40
     N_test = 128
     train_batch_size = 1
-    test_batch_size = 32
+    test_batch_size = 64
     train_min_len = 3
     train_max_len = 20
     test_len = 64
@@ -22,7 +22,7 @@ def train_test_config():
 
 @ex.config
 def mem_weights():
-    use_frozen_wts = True
+    use_frozen_wts = False
     mem_freeze_wts_file = MEM_FREEZE_WTS
     mem_epoch = 12359
 
