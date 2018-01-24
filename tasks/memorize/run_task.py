@@ -3,10 +3,10 @@ import os
 import h5py
 
 # change below based on task ----
-from tasks.recall.build import build_ntm, build_data_gen
-from tasks.recall.build import ex, TASK_NAME, LOG_ROOT
+from tasks.memorize.build import build_ntm, build_data_gen
+from tasks.memorize.build import ex, TASK_NAME, LOG_ROOT
 
-time_str = '2018-01-20__10_46_34_AM'
+time_str = '2018-01-23__08_04_48_PM'
 
 
 @ex.config
@@ -15,10 +15,10 @@ def run_config():
     N = 128
     batch_size = 32
     length = 64
-    num_batches = 5
+    num_batches = 100
     all_epochs = False
-    epoch_min = 6000
-    epoch_max = 6100
+    epoch_min = 20936
+    epoch_max = 20936
 
 # end change ---
 
