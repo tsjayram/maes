@@ -38,7 +38,8 @@ class NTM_Solve(NTM):
                          self.N, self.M,
                          return_sequences=False, return_state=True,
                          name='NTM_Layer_Memorize')
-        tm_input_seq = Input(shape=(None, self.in_dim))
+        print(self.in_dim)
+        tm_input_seq = Input(shape=(None, self.in_dim + 1))
         input_state = [Input(shape=(s,)) for s in layer.state_size]
         ntm_outputs = layer(tm_input_seq, initial_state=input_state)
         ntm_inputs = [tm_input_seq] + input_state
@@ -92,12 +93,11 @@ class NTM_Solve(NTM):
 
         while True:
             length = rnd.randint(low=min_len, high=max_len + 1)
-            inp = np.empty((batch_size, length + 1, self.in_dim))
-            element_size = self.in_dim - 1
-            seq = rnd.binomial(1, 0.5, (batch_size, length, element_size))
-            inp[:, 1:, :element_size] = target
+            inp = np.empty((batch_size, length + 1, self.in_dim + 1))
+            seq = rnd.binomial(1, 0.5, (batch_size, length, self.in_dim))
+            inp[:, 1:, :self.in_dim] = seq
             # markers
-            inp[:, 1:, element_size] = np.zeros((length,))
-            inp[:, 0, :element_size] = np.zeros((element_size,))
-            inp[:, 0, element_size] = 1
+            inp[:, 1:, self.in_dim] = np.zeros((length,))
+            inp[:, 0, :self.in_dim] = np.zeros((self.in_dim,))
+            inp[:, 0, self.in_dim] = 1
             yield inp, init_state, length
