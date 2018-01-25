@@ -1,7 +1,6 @@
 # change below based on task ----
-from tasks.memorize.build import LOG_ROOT, ex
+from tasks.memorize.build import ex
 
-MEM_FREEZE_TIME = '2018-01-23__08_04_48_PM'
 RANDOM_SEED = 12345
 REPORT_INTERVAL = 100
 
@@ -18,13 +17,6 @@ def train_test_config():
     train_max_len = 20
     test_len = 64
     report_interval = REPORT_INTERVAL
-
-
-@ex.config
-def mem_weights():
-    use_frozen_wts = False
-    mem_freeze_wts_file = LOG_ROOT + 'memorize/' + MEM_FREEZE_TIME + '/model_weights.hdf5'
-    mem_epoch = 20936
 
 # end change ---
 

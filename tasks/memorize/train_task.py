@@ -2,7 +2,6 @@
 import logging
 import logging.config
 import os
-import numpy as np
 import arrow
 import h5py
 from ruamel.yaml import YAML
@@ -40,20 +39,8 @@ ex.logger = logger
 
 
 @ex.capture
-def mem_freeze(ntm, use_frozen_wts, mem_freeze_wts_file, mem_epoch):
-    if use_frozen_wts:
-        epoch_key = 'epoch_{:05d}'.format(mem_epoch)
-        with h5py.File(mem_freeze_wts_file, 'r') as f:
-            print('In ', epoch_key)
-            grp = f[epoch_key]
-            weights = [np.array(grp[name]) for name in grp if 'Memorize' in name]
-            ntm.mem_freeze_weights(weights)
-
-
-@ex.capture
 def build_train(N_train, train_batch_size, train_min_len, train_max_len):
     ntm = build_ntm(N=N_train)
-    mem_freeze(ntm)
     data_gen = build_data_gen(ntm, train_batch_size, train_min_len, train_max_len)
     return ntm, data_gen
 
