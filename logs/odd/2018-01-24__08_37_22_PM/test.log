@@ -1,0 +1,33 @@
+Start time: 2018-01-24 08:37:23 PM
+---
+repositories: []
+name: odd
+base_dir: /home/jayram/projects/Keras-Tensorflow/ntm_tasks/tasks/odd
+mainfile: build.py
+sources:
+- - build.py
+  - c264d2ba7087a7468e024e969caa4d39
+dependencies:
+- numpy==1.13.3
+- sacred==0.7.2
+...
+---
+train_max_len: 20
+report_interval: 100
+tm_state_units: 3
+test_len: 64
+test_batch_size: 64
+mem_freeze_wts_file: ../../logs/memorize/2018-01-23__08_04_48_PM/model_weights.hdf5
+seed: 12345
+M: 10
+epochs: 50000
+train_batch_size: 1
+mem_epoch: 20936
+element_size: 8
+use_frozen_wts: true
+N_train: 40
+num_shift: 5
+N_test: 128
+is_cam: false
+train_min_len: 3
+...
