@@ -39,22 +39,22 @@ ex.logger = logger
 
 
 @ex.capture
-def build_train(N_train, train_batch_size, train_min_len, train_max_len):
+def build_train(N_train, train_batch_size, train_min_num_seq, train_max_num_seq, train_avg_len):
     ntm = build_ntm(N=N_train)
-    data_gen = build_data_gen(ntm, train_batch_size, train_min_len, train_max_len)
+    data_gen = build_data_gen(ntm, train_batch_size, train_min_num_seq, train_max_num_seq, train_avg_len)
     return ntm, data_gen
 
 
 @ex.capture
-def build_test(N_test, test_batch_size, test_len):
+def build_test(N_test, test_batch_size, test_min_num_seq, test_max_num_seq, test_avg_len):
     ntm = build_ntm(N=N_test)
-    data_gen = build_data_gen(ntm, test_batch_size, test_len, test_len)
+    data_gen = build_data_gen(ntm, test_batch_size, test_min_num_seq, test_max_num_seq, test_avg_len)
     return ntm, data_gen
 
 
 @ex.capture
-def get_train_status(train_max_len, report_interval):
-    threshold = (train_max_len * 3) // 4
+def get_train_status(train_min_num_seq, train_max_num_seq, train_avg_len, report_interval):
+    threshold = (train_min_num_seq + train_max_num_seq) * train_avg_len
     return train_status_gen(threshold, report_interval)
 
 

@@ -12,7 +12,7 @@ LOG_ROOT = '../../logs/'
 @ex.config
 def model_config():
     element_size = 8
-    tm_state_units = 3
+    tm_state_units = 8
     num_shift = 3
     is_cam = True
     M = 10
@@ -30,21 +30,23 @@ def build_ntm(element_size, tm_state_units, is_cam, num_shift, N, M):
 
 
 @ex.capture
-def build_data_gen(ntm, batch_size, min_len, max_len, _rnd):
+def build_data_gen(ntm, batch_size, min_num_seq, max_num_seq, avg_len, _rnd):
+    min_len = min_num_seq * avg_len * 2
+    max_len = max_num_seq * avg_len * 2
     mem_data_gen = ntm.mem_data_gen(batch_size, min_len, max_len, _rnd)
     recall_init_state = ntm.solve_layer.init_state(batch_size)
     aux_in_dim = 1
     while True:
         mem_input, mem_init_state, mem_length = next(mem_data_gen)
-
         sa = np.zeros((mem_input.shape[2],))
         sa[-1] = 1
         so = np.copy(sa)
         so[0] = 1
 
-        num_splits = _rnd.randint(low=0, high=mem_length//6) * 2 + 1
+        num_seq = _rnd.randint(low=min_num_seq, high=max_num_seq+1)
+        num_marks = 2 * num_seq - 1
         mask = np.zeros((mem_length,))
-        mask[:num_splits] = 1
+        mask[:num_marks] = 1
         _rnd.shuffle(mask)
         mask = np.insert(mask, 0, [1])
         indices = np.ravel(np.where(mask))
