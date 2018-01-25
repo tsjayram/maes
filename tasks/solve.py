@@ -100,3 +100,10 @@ class NTM_Solve(NTM):
             inp[:, 0, :self.in_dim] = np.zeros((self.in_dim,))
             inp[:, 0, self.in_dim] = 1
             yield inp, init_state, length
+
+    def mem_data_simple_gen(self, batch_size, rnd):
+        init_state = self.mem_layer.init_state(batch_size)
+        length = yield init_state
+        while True:
+            seq = rnd.binomial(1, 0.5, (batch_size, length, self.in_dim))
+            length = yield seq

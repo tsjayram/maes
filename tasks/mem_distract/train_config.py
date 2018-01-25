@@ -13,8 +13,8 @@ def train_config():
 
     N_train = 60
     train_batch_size = 1
-    train_min_num_seq = 3
-    train_max_num_seq = 4
+    train_min_num_seq = 2
+    train_max_num_seq = 6
     train_avg_len = 5
 
 
