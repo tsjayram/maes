@@ -32,14 +32,14 @@ def get_train_status(train_max_len, report_interval):
 
 
 @ex.capture
-def build_train(N_train, bias, train_batch_size, train_min_len, train_max_len):
+def build_train(N_train, train_batch_size, train_min_len, train_max_len, bias):
     ntm = build_ntm(N=N_train)
-    data_gen = build_data_gen(ntm, bias, train_batch_size, train_min_len, train_max_len)
+    data_gen = build_data_gen(ntm, train_batch_size, train_min_len, train_max_len, bias)
     return ntm, data_gen
 
 
 @ex.capture
-def build_test(N_test, bias, test_batch_size, test_len):
+def build_test(N_test, test_batch_size, test_len, bias):
     ntm = build_ntm(N=N_test)
-    data_gen = build_data_gen(ntm, bias, test_batch_size, test_len, test_len)
+    data_gen = build_data_gen(ntm, test_batch_size, test_len, test_len, bias)
     return ntm, data_gen
