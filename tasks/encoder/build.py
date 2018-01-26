@@ -41,7 +41,7 @@ def build_data_gen(ntm, batch_size, bias, min_len, max_len, _rnd):
     while True:
         encoder_length = _rnd.randint(low=min_len, high=max_len + 1)
         encoder_input = encoder_data_gen.send(encoder_length)
-        target = np.copy(encoder_input[:,:,1:])
+        target = np.copy(encoder_input[:, :, 1:])
         encoder_input[:, :, 0] = 0
         encoder_input = np.insert(encoder_input, 0, 0, axis=1)
         encoder_input[:, 0, 0] = 1

@@ -13,7 +13,7 @@ def train_test_config():
     seed = RANDOM_SEED
     epochs = 50000
     N_train = 40
-    N_test = 80
+    N_test = 128
     train_batch_size = 1
     test_batch_size = 64
     train_min_len = 3
@@ -32,16 +32,14 @@ def get_train_status(train_max_len, report_interval):
 
 
 @ex.capture
-def build_train(N_train, train_batch_size, train_min_len, train_max_len):
+def build_train(N_train, bias, train_batch_size, train_min_len, train_max_len):
     ntm = build_ntm(N=N_train)
-    data_gen = build_data_gen(ntm, train_batch_size, train_min_len, train_max_len)
+    data_gen = build_data_gen(ntm, bias, train_batch_size, train_min_len, train_max_len)
     return ntm, data_gen
 
 
 @ex.capture
-def build_test(N_test, test_batch_size, test_len):
+def build_test(N_test, bias, test_batch_size, test_len):
     ntm = build_ntm(N=N_test)
-    data_gen = build_data_gen(ntm, test_batch_size, test_len, test_len)
+    data_gen = build_data_gen(ntm, bias, test_batch_size, test_len, test_len)
     return ntm, data_gen
-
-

@@ -20,8 +20,8 @@ def get_exp_config(_run):
 
 
 def train_status_gen(threshold, report_interval):
-    args = yield
     best_loss = 1.0
+    args = yield
     while True:
         epoch, train_length, loss = args
         if (loss < best_loss) and (train_length > threshold):
