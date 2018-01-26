@@ -16,9 +16,11 @@ def train_ntm(ntm_train, train_data_gen, train_file,
                             metrics=[alt_binary_accuracy])
 
     train_file.write('\nepoch,accuracy,length,loss,improved\n')
-    test_file.write('\nepoch,accuracy,improved\n')
+    train_init_state = next(train_data_gen)
 
-    test_inputs, test_init_state, test_target, test_length = next(test_data_gen)
+    test_file.write('\nepoch,accuracy,improved\n')
+    test_init_state = next(test_data_gen)
+    test_inputs, test_target, test_length = next(test_data_gen)
     format_str = 'Test Shape:\n  Output = {}, Length = {}'
     log.debug(format_str.format(test_target.shape, test_length))
 
@@ -32,7 +34,7 @@ def train_ntm(ntm_train, train_data_gen, train_file,
             log.debug(model_wt_str)
             sys.exit('Exiting because of nan in training')
 
-        train_inputs, train_init_state, train_target, train_length = next(train_data_gen)
+        train_inputs, train_target, train_length = next(train_data_gen)
         loss, acc = ntm_train.model.train_on_batch(train_inputs + train_init_state, train_target)
         format_str = '\n==>Stats at epoch {:05d}:\n'
         format_str = format_str + '    acc={:12.10f}; loss={:12.10f}; length={:4d}'

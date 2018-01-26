@@ -34,6 +34,8 @@ def build_data_gen(ntm, batch_size, min_num_seq, max_num_seq, min_len, max_len, 
     mem_data_gen = ntm.mem_data_simple_gen(batch_size, _rnd)
     mem_init_state = next(mem_data_gen)
     recall_init_state = ntm.solve_layer.init_state(batch_size)
+    init_state = mem_init_state + recall_init_state[:-1]
+    yield init_state
     aux_in_dim = 1
     while True:
         num_seq = _rnd.randint(low=min_num_seq, high=max_num_seq + 1)

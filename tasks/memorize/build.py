@@ -31,15 +31,22 @@ def build_ntm(element_size, tm_state_units, is_cam, num_shift, N, M):
 
 @ex.capture
 def build_data_gen(ntm, batch_size, min_len, max_len, _rnd):
-    mem_data_gen = ntm.mem_data_gen(batch_size, min_len, max_len, _rnd)
+    mem_data_gen = ntm.mem_data_simple_gen(batch_size, _rnd)
+    mem_init_state = next(mem_data_gen)
     recall_init_state = ntm.solve_layer.init_state(batch_size)
+    init_state = mem_init_state + recall_init_state[:-1]
+    yield init_state
+
     aux_in_dim = 1
     while True:
-        mem_input, mem_init_state, mem_length = next(mem_data_gen)
+        mem_length = _rnd.randint(low=min_len, high=max_len + 1)
+        mem_input = mem_data_gen.send(mem_length)
+        mem_input = np.insert(mem_input, 0, 0, axis=1)
+        mem_input = np.insert(mem_input, 0, 0, axis=2)
+        mem_input[:, 0, 0] = 1
         target = mem_input
         aux_seq = np.ones((batch_size, target.shape[1], aux_in_dim)) * 0.5
         inputs = [mem_input, aux_seq]
-        init_state = mem_init_state + recall_init_state[:-1]
-        yield inputs, init_state, target, mem_length
+        yield inputs, target, mem_length
 
 # end change ---
