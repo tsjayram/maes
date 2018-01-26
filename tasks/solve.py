@@ -90,5 +90,5 @@ class NTMSolve(NTM):
         init_state = self.encoder_layer.init_state(batch_size)
         length = yield init_state
         while True:
-            seq = rnd.binomial(1, bias, (batch_size, length, self.in_dim))
+            seq = rnd.binomial(1, bias, (batch_size, length, self.in_dim - 1))
             length = yield seq
