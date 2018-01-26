@@ -30,8 +30,8 @@ def build_ntm(element_size, tm_state_units, is_cam, num_shift, N, M):
 
 
 @ex.capture
-def build_data_gen(ntm, batch_size, min_len, max_len, _rnd):
-    encoder_data_gen = ntm.encoder_data_gen(batch_size, _rnd)
+def build_data_gen(ntm, batch_size, bias, min_len, max_len, _rnd):
+    encoder_data_gen = ntm.encoder_data_gen(batch_size, bias, _rnd)
     encoder_init_state = next(encoder_data_gen)
     decoder_init_state = ntm.solve_layer.init_state(batch_size)
     init_state = encoder_init_state + decoder_init_state[:-1]

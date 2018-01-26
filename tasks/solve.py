@@ -86,9 +86,9 @@ class NTMSolve(NTM):
         self.encoder_layer.set_weights(weights)
         self.encoder_layer.trainable = False
 
-    def encoder_data_gen(self, batch_size, rnd):
+    def encoder_data_gen(self, batch_size, bias, rnd):
         init_state = self.encoder_layer.init_state(batch_size)
         length = yield init_state
         while True:
-            seq = rnd.binomial(1, 0.5, (batch_size, length, self.in_dim))
+            seq = rnd.binomial(1, bias, (batch_size, length, self.in_dim))
             length = yield seq

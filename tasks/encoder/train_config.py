@@ -19,6 +19,7 @@ def train_test_config():
     train_min_len = 3
     train_max_len = 20
     test_len = 64
+    bias = 0.5
     report_interval = REPORT_INTERVAL
 
 
