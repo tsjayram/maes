@@ -3,8 +3,8 @@ import os
 import h5py
 
 # change below based on task ----
-from tasks.memorize.build import build_ntm, build_data_gen
-from tasks.memorize.build import ex, TASK_NAME, LOG_ROOT
+from tasks.encoder.build import build_ntm, build_data_gen
+from tasks.encoder.build import ex, TASK_NAME, LOG_ROOT
 
 time_str = '2018-01-23__08_04_48_PM'
 

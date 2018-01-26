@@ -8,12 +8,12 @@ import h5py
 from ruamel.yaml import YAML
 
 from model.train import train_ntm
-from tasks.utils import get_exp_config, train_status_gen, pause
+from tasks.utils import get_exp_config, pause
 
 # change below based on task ----
 from tasks.recall.build import build_ntm, build_data_gen
 from tasks.recall.build import ex, TASK_NAME, LOG_ROOT
-import tasks.recall.train_config
+from tasks.recall.train_config import get_train_status
 # end change ---
 
 time_str = arrow.now().format('YYYY-MM-DD__hh_mm_ss_A')
@@ -63,12 +63,6 @@ def build_test(N_test, test_batch_size, test_len):
     ntm = build_ntm(N=N_test)
     data_gen = build_data_gen(ntm, test_batch_size, test_len, test_len)
     return ntm, data_gen
-
-
-@ex.capture
-def get_train_status(train_max_len, report_interval):
-    threshold = (train_max_len * 3) // 4
-    return train_status_gen(threshold, report_interval)
 
 
 @ex.automain
