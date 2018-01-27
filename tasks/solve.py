@@ -5,13 +5,13 @@ from model.ntm import NTM
 from ntm.ntm_layer import NTMLayer
 
 
-class NTMSolve(NTM):
+class NTMSolver(NTM):
     def __init__(self, in_dim, out_dim, aux_in_dim, tm_state_units,
                  ret_seq, is_cam, num_shift,
                  N, M,
-                 name='NTM_Solve'):
+                 name='NTM_Solver'):
 
-        super(NTMSolve, self).__init__()
+        super(NTMSolver, self).__init__()
 
         self.in_dim = in_dim
         self.out_dim = out_dim
@@ -36,7 +36,7 @@ class NTMSolve(NTM):
                          is_cam, num_shift,
                          self.N, self.M,
                          return_sequences=False, return_state=True,
-                         name='NTM_Layer_Encode')
+                         name='NTM_Layer_Encoder')
         tm_input_seq = Input(shape=(None, self.in_dim))
         input_state = [Input(shape=(s,)) for s in layer.state_size]
         ntm_outputs = layer(tm_input_seq, initial_state=input_state)
@@ -63,7 +63,7 @@ class NTMSolve(NTM):
                          self.is_cam, self.num_shift,
                          self.N, self.M,
                          return_sequences=self.ret_seq, return_state=False,
-                         name='NTM_Layer_Solve')
+                         name='NTM_Layer_Solver')
 
         tm_aux_seq = Input(shape=(None, self.aux_in_dim))
         input_state_solve = [Input(shape=(s,)) for s in layer.state_size[:-1]]
@@ -76,19 +76,25 @@ class NTMSolve(NTM):
 
     @property
     def encoder_layer(self):
-        return self.encoder_model.get_layer(name='NTM_Layer_Encode')
+        return self.encoder_model.get_layer(name='NTM_Layer_Encoder')
 
     @property
-    def solve_layer(self):
-        return self.model.get_layer(name='NTM_Layer_Solve')
+    def solver_layer(self):
+        return self.model.get_layer(name='NTM_Layer_Solver')
 
     def encoder_freeze_weights(self, weights):
         self.encoder_layer.set_weights(weights)
         self.encoder_layer.trainable = False
 
-    def encoder_data_gen(self, batch_size, bias, rnd):
-        init_state = self.encoder_layer.init_state(batch_size)
-        length = yield init_state
-        while True:
-            seq = rnd.binomial(1, bias, (batch_size, length, self.in_dim - 1))
-            length = yield seq
+    def encoder_init_state(self, batch_size):
+        return self.encoder_layer.init_state(batch_size)
+
+    def solver_init_state(self, batch_size):
+        return self.solver_layer.init_state(batch_size)
+
+    # def encoder_data_gen(self, batch_size, bias, rnd):
+    #     init_state = self.encoder_layer.init_state(batch_size)
+    #     length = yield init_state
+    #     while True:
+    #         seq = rnd.binomial(1, bias, (batch_size, length, self.in_dim - 1))
+    #         length = yield seq
