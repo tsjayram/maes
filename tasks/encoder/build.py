@@ -21,7 +21,7 @@ def model_config():
 @ex.capture
 def build_ntm(element_size, tm_state_units, is_cam, num_shift, N, M):
     in_dim = element_size + 1
-    out_dim = element_size + 1
+    out_dim = element_size
     aux_in_dim = 1
     ret_seq = True
     ntm = NTMSolver(in_dim, out_dim, aux_in_dim, tm_state_units,
@@ -41,7 +41,7 @@ def build_data_gen(ntm, batch_size, min_len, max_len, bias, element_size, _rnd):
         seq = _rnd.binomial(1, bias, (batch_size, encoder_length, element_size))
         encoder_input = np.insert(seq, 0, 0, axis=1)
         encoder_input = np.insert(encoder_input, 0, 0, axis=2)
-        target = encoder_input
+        target = seq
         aux_seq = np.ones((batch_size, target.shape[1], aux_in_dim)) * 0.5
         inputs = [encoder_input, aux_seq]
         yield inputs, target, encoder_length
