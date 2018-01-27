@@ -74,6 +74,10 @@ class NTMSolver(NTM):
         ntm_model = Model(inputs=ntm_inputs, outputs=tm_output_seq)
         return ntm_model
 
+    def encoder_freeze_weights(self, weights):
+        self.encoder_layer.set_weights(weights)
+        self.encoder_layer.trainable = False
+
     @property
     def encoder_layer(self):
         return self.encoder_model.get_layer(name='NTM_Layer_Encoder')
@@ -82,19 +86,7 @@ class NTMSolver(NTM):
     def solver_layer(self):
         return self.model.get_layer(name='NTM_Layer_Solver')
 
-    def encoder_freeze_weights(self, weights):
-        self.encoder_layer.set_weights(weights)
-        self.encoder_layer.trainable = False
-
-    def encoder_init_state(self, batch_size):
-        return self.encoder_layer.init_state(batch_size)
-
-    def solver_init_state(self, batch_size):
-        return self.solver_layer.init_state(batch_size)
-
-    # def encoder_data_gen(self, batch_size, bias, rnd):
-    #     init_state = self.encoder_layer.init_state(batch_size)
-    #     length = yield init_state
-    #     while True:
-    #         seq = rnd.binomial(1, bias, (batch_size, length, self.in_dim - 1))
-    #         length = yield seq
+    def init_state(self, batch_size):
+        encoder_init_state = self.encoder_layer.init_state(batch_size)
+        solver_init_state = self.solver_layer.init_state(batch_size)
+        return encoder_init_state, solver_init_state

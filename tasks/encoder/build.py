@@ -31,11 +31,11 @@ def build_ntm(element_size, tm_state_units, is_cam, num_shift, N, M):
 
 @ex.capture
 def build_data_gen(ntm, batch_size, min_len, max_len, bias, element_size, _rnd):
-    encoder_init_state = ntm.encoder_init_state(batch_size)
-    decoder_init_state = ntm.solver_init_state(batch_size)
-    init_state = encoder_init_state + decoder_init_state[:-1]
-    aux_in_dim = 1
+    encoder_init_state, solver_init_state = ntm.init_state(batch_size)
+    init_state = encoder_init_state + solver_init_state[:-1]
     yield init_state
+
+    aux_in_dim = 1
     while True:
         encoder_length = _rnd.randint(low=min_len, high=max_len + 1)
         seq = _rnd.binomial(1, bias, (batch_size, encoder_length, element_size))

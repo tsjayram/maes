@@ -6,7 +6,7 @@ import h5py
 from tasks.encoder.build import build_ntm, build_data_gen
 from tasks.encoder.build import ex, TASK_NAME, LOG_ROOT
 
-time_str = '2018-01-23__08_04_48_PM'
+time_str = '2018-01-26__11_56_39_PM'
 
 
 @ex.config
@@ -15,10 +15,11 @@ def run_config():
     N = 128
     batch_size = 32
     length = 64
+    bias = 0.5
     num_batches = 100
     all_epochs = False
-    epoch_min = 20936
-    epoch_max = 20936
+    epoch_min = 7461
+    epoch_max = 7461
 
 # end change ---
 
@@ -32,8 +33,9 @@ RANDOM_SEED = 12345
 
 
 @ex.capture
-def make_log(seed, length, N, batch_size):
-    logfile = '/seed={}_L={:04d}_N={:04d}_bs={:04d}.log'.format(seed, length, N, batch_size)
+def make_log(seed, length, N, batch_size, bias):
+    format_str = '/seed={}_L={:04d}_N={:04d}_bs={:04d}_bias={:04f}.log'
+    logfile = format_str.format(seed, length, N, batch_size, bias)
     return logfile
 
 
@@ -51,6 +53,7 @@ def run(num_batches, all_epochs, epoch_min, epoch_max, seed):
         g.write('batch_num,epoch,batch_acc\n')
 
     ntm, data_gen = build_run()
+    init_state = next(data_gen)
     print(ntm.pretty_print_str())
 
     with h5py.File(MODEL_WTS, 'r') as f, open(RUNS_DIR + logfile, 'a', 1) as g:
@@ -60,7 +63,7 @@ def run(num_batches, all_epochs, epoch_min, epoch_max, seed):
             epoch_keys = ['epoch_{:05d}'.format(num) for num in range(epoch_min, epoch_max+1)]
 
         for n in range(1, num_batches+1):
-            inputs, init_state, target, length = next(data_gen)
+            inputs, target, length = next(data_gen)
             for key in (x for x in epoch_keys if x in f):
                 print('In batch num = {}, {}'.format(n, key))
                 grp = f[key]
