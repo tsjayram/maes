@@ -27,7 +27,7 @@ def train_test_config():
 @ex.config
 def mem_weights():
     use_frozen_wts = True
-    mem_freeze_wts_file = LOG_ROOT + 'encoder/' + MEM_FREEZE_TIME + '/model_weights.hdf5'
+    mem_freeze_wts_file = LOG_ROOT + 'encode/' + MEM_FREEZE_TIME + '/model_weights.hdf5'
     mem_epoch = MEM_EPOCH
 
 

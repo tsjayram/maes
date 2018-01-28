@@ -1,8 +1,8 @@
 from tasks.utils import train_status_gen
 
 # change below based on task ----
-from tasks.encoder.build import ex
-from tasks.encoder.build import build_ntm, build_data_gen
+from tasks.encode.build import ex
+from tasks.encode.build import build_ntm, build_data_gen
 
 RANDOM_SEED = 12345
 REPORT_INTERVAL = 100

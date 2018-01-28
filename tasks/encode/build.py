@@ -1,10 +1,10 @@
 import numpy as np
 from sacred import Experiment
 
-from tasks.solve import NTMSolver
+from tasks.solver import NTMSolver
 
 # change below based on task ----
-TASK_NAME = 'encoder'
+TASK_NAME = 'encode'
 ex = Experiment(TASK_NAME)
 LOG_ROOT = '../../logs/'
 
@@ -41,6 +41,7 @@ def build_data_gen(ntm, batch_size, min_len, max_len, bias, element_size, _rnd):
         seq = _rnd.binomial(1, bias, (batch_size, encoder_length, element_size))
         encoder_input = np.insert(seq, 0, 0, axis=1)
         encoder_input = np.insert(encoder_input, 0, 0, axis=2)
+        encoder_input[:, 0, 0] = 1
         target = seq
         aux_seq = np.ones((batch_size, target.shape[1], aux_in_dim)) * 0.5
         inputs = [encoder_input, aux_seq]

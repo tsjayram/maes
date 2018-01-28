@@ -10,8 +10,8 @@ from model.train import train_ntm
 from tasks.utils import get_exp_config, pause
 
 # change below based on task ----
-from tasks.encoder.build import ex, TASK_NAME, LOG_ROOT
-from tasks.encoder.train_config import build_train, build_test, get_train_status
+from tasks.encode.build import ex, TASK_NAME, LOG_ROOT
+from tasks.encode.train_config import build_train, build_test, get_train_status
 # end change ---
 
 time_str = arrow.now().format('YYYY-MM-DD__hh_mm_ss_A')

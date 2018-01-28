@@ -3,8 +3,8 @@ import os
 import h5py
 
 # change below based on task ----
-from tasks.encoder.build import build_ntm, build_data_gen
-from tasks.encoder.build import ex, TASK_NAME, LOG_ROOT
+from tasks.encode.build import build_ntm, build_data_gen
+from tasks.encode.build import ex, TASK_NAME, LOG_ROOT
 
 time_str = '2018-01-26__11_56_39_PM'
 
@@ -17,9 +17,7 @@ def run_config():
     length = 64
     bias = 0.5
     num_batches = 100
-    all_epochs = False
-    epoch_min = 7461
-    epoch_max = 7461
+    epochs = [7461]
 
 # end change ---
 
@@ -47,7 +45,7 @@ def build_run(length):
 
 
 @ex.automain
-def run(num_batches, all_epochs, epoch_min, epoch_max, seed):
+def run(num_batches, epochs, seed):
     logfile = make_log(seed)
     with open(RUNS_DIR + logfile, 'a') as g:
         g.write('batch_num,epoch,batch_acc\n')
@@ -57,10 +55,7 @@ def run(num_batches, all_epochs, epoch_min, epoch_max, seed):
     print(ntm.pretty_print_str())
 
     with h5py.File(MODEL_WTS, 'r') as f, open(RUNS_DIR + logfile, 'a', 1) as g:
-        if all_epochs:
-            epoch_keys = [epoch_str for epoch_str in f]
-        else:
-            epoch_keys = ['epoch_{:05d}'.format(num) for num in range(epoch_min, epoch_max+1)]
+        epoch_keys = ['epoch_{:05d}'.format(num) for num in epochs]
 
         for n in range(1, num_batches+1):
             inputs, target, length = next(data_gen)

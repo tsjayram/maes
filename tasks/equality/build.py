@@ -1,7 +1,7 @@
 import numpy as np
 from sacred import Experiment
 
-from tasks.solve import NTM_Solve
+from tasks.solver import NTM_Solve
 
 # change below based on task ----
 TASK_NAME = 'equality'
