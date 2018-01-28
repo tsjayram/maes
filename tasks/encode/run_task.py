@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import os
+import arrow
 import h5py
 
 # change below based on task ----
@@ -48,6 +49,8 @@ def build_run(length):
 def run(num_batches, epochs, seed):
     logfile = make_log(seed)
     with open(RUNS_DIR + logfile, 'a') as g:
+        time_now = arrow.now().format('YYYY-MM-DD__hh_mm_ss_A')
+        g.write(time_now + '\n')
         g.write('batch_num,epoch,batch_acc\n')
 
     ntm, data_gen = build_run()
