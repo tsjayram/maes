@@ -1,24 +1,24 @@
 #!/usr/bin/env python
 import os
+import arrow
 import h5py
 
 # change below based on task ----
 from tasks.reverse.build import build_ntm, build_data_gen
 from tasks.reverse.build import ex, TASK_NAME, LOG_ROOT
 
-time_str = '2018-01-20__10_46_34_AM'
+time_str = '2018-01-28__04_10_38_PM'
 
 
 @ex.config
 def run_config():
     seed = RANDOM_SEED
-    N = 128
+    N = 68
     batch_size = 32
     length = 64
-    num_batches = 5
-    all_epochs = False
-    epoch_min = 6000
-    epoch_max = 6100
+    bias = 0.5
+    num_batches = 100
+    epochs = [9211]
 
 # end change ---
 
@@ -32,8 +32,9 @@ RANDOM_SEED = 12345
 
 
 @ex.capture
-def make_log(seed, length, N, batch_size):
-    logfile = '/seed={}_L={:04d}_N={:04d}_bs={:04d}.log'.format(seed, length, N, batch_size)
+def make_log(seed, length, N, batch_size, bias):
+    format_str = '/seed={}_L={:04d}_N={:04d}_bs={:04d}_bias={:04f}.log'
+    logfile = format_str.format(seed, length, N, batch_size, bias)
     return logfile
 
 
@@ -45,22 +46,22 @@ def build_run(length):
 
 
 @ex.automain
-def run(num_batches, all_epochs, epoch_min, epoch_max, seed):
+def run(num_batches, epochs, seed):
     logfile = make_log(seed)
     with open(RUNS_DIR + logfile, 'a') as g:
+        time_now = arrow.now().format('YYYY-MM-DD__hh_mm_ss_A')
+        g.write(time_now + '\n')
         g.write('batch_num,epoch,batch_acc\n')
 
     ntm, data_gen = build_run()
+    init_state = next(data_gen)
     print(ntm.pretty_print_str())
 
     with h5py.File(MODEL_WTS, 'r') as f, open(RUNS_DIR + logfile, 'a', 1) as g:
-        if all_epochs:
-            epoch_keys = [epoch_str for epoch_str in f]
-        else:
-            epoch_keys = ['epoch_{:05d}'.format(num) for num in range(epoch_min, epoch_max+1)]
+        epoch_keys = ['epoch_{:05d}'.format(num) for num in epochs]
 
         for n in range(1, num_batches+1):
-            inputs, init_state, target, length = next(data_gen)
+            inputs, target, length = next(data_gen)
             for key in (x for x in epoch_keys if x in f):
                 print('In batch num = {}, {}'.format(n, key))
                 grp = f[key]

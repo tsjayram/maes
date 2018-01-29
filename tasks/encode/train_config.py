@@ -22,13 +22,13 @@ def train_test_config():
     bias = 0.5
     report_interval = REPORT_INTERVAL
 
+# end change ---
+
 
 @ex.capture
 def get_train_status(train_max_len, report_interval):
     threshold = (train_max_len * 3) // 4
     return train_status_gen(threshold, report_interval)
-
-# end change ---
 
 
 @ex.capture
