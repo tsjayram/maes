@@ -18,7 +18,7 @@ TASK_NAME = 'encode'
 ex = Experiment(TASK_NAME)
 LOG_ROOT = '../../../logs/'
 
-time_str = '2018-01-28__12_40_36_AM'
+time_str = '2018-01-20__10_46_34_AM'
 
 LOG_DIR = LOG_ROOT + TASK_NAME + '/' + time_str + '/'
 MODEL_WTS = LOG_DIR + 'model_weights.hdf5'
@@ -44,7 +44,7 @@ def run_config():
     batch_size = 1
     length = 64
     bias = 0.5
-    epochs = [27987]
+    epochs = [12359]
 
 
 @ex.capture
@@ -90,7 +90,7 @@ def run(epochs, seed):
             ntm_run_data = ntm.get_run_data(inp)
             fig = plot_ntm_run(inp, ntm_run_data)
             filename = '/fig_{}_{}.pdf'.format(key, time_now)
-            fig.savefig(plots_dir + filename, bbox_inches='tight')
-            # matplotlib.pyplot.pause(1000)
-            # fig.show()
+            # fig.savefig(plots_dir + filename, bbox_inches='tight')
+            fig.show()
+            matplotlib.pyplot.pause(1000)
             matplotlib.pyplot.close(fig)

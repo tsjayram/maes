@@ -24,7 +24,7 @@ def initialize_plot_area():
     axes['input'].set_ylabel('Word')
     axes['input'].set_yticklabels([])
 
-    axes['input'].set_xlabel('Time')
+    axes['input'].set_xlabel('Sequence Index')
 
     axes['memory'].set_xlabel('Slots')
 
