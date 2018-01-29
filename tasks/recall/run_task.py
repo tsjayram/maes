@@ -7,7 +7,7 @@ import h5py
 from tasks.recall.build import build_ntm, build_data_gen
 from tasks.recall.build import ex, TASK_NAME, LOG_ROOT
 
-time_str = '2018-01-28__02_10_41_PM'
+time_str = '2018-01-28__03_05_31_PM'
 
 
 @ex.config
