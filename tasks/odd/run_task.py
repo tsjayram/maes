@@ -7,18 +7,18 @@ import h5py
 from tasks.odd.build import build_ntm, build_data_gen
 from tasks.odd.build import ex, TASK_NAME, LOG_ROOT
 
-time_str = '2018-01-28__02_10_41_PM'
+time_str = '2018-01-28__04_10_38_PM'
 
 
 @ex.config
 def run_config():
     seed = RANDOM_SEED
-    N = 128
+    N = 68
     batch_size = 32
     length = 64
     bias = 0.5
     num_batches = 100
-    epochs = [15524]
+    epochs = [9211]
 
 # end change ---
 

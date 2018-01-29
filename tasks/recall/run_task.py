@@ -13,7 +13,7 @@ time_str = '2018-01-28__03_05_31_PM'
 @ex.config
 def run_config():
     seed = RANDOM_SEED
-    N = 128
+    N = 68
     batch_size = 32
     length = 64
     bias = 0.5
