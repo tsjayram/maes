@@ -3,7 +3,7 @@ import sys
 import numpy as np
 from keras.metrics import binary_crossentropy
 
-from model.metrics import alt_binary_accuracy
+from model.metrics import alt_binary_accuracy, alt_binary_cross_entropy
 
 np.set_printoptions(threshold=np.nan)
 
@@ -12,7 +12,7 @@ def train_ntm(ntm_train, train_data_gen, train_file,
               ntm_test, test_data_gen, test_file, model_wts_file,
               epochs, train_status, log):
 
-    ntm_train.model.compile(loss=binary_crossentropy, optimizer='rmsprop',
+    ntm_train.model.compile(loss=alt_binary_cross_entropy, optimizer='rmsprop',
                             metrics=[alt_binary_accuracy])
 
     train_file.write('\nepoch,accuracy,length,loss,improved\n')
