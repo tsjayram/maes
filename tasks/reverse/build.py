@@ -45,7 +45,7 @@ def build_data_gen(ntm, batch_size, min_len, max_len, bias, element_size, _rnd):
         encoder_input[:, 0, 0] = 1
 
         target = np.flip(seq, axis=1)
-        target = np.insert(target, 0, 0, axis=1)
+        target = np.insert(target, 0, 0.5, axis=1)
 
         aux_seq = np.ones((batch_size, target.shape[1], aux_in_dim)) * 0.5
         inputs = [encoder_input, aux_seq]
