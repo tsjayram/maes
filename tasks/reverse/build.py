@@ -39,10 +39,13 @@ def build_data_gen(ntm, batch_size, min_len, max_len, bias, element_size, _rnd):
     while True:
         target_length = _rnd.randint(low=min_len, high=max_len + 1)
         seq = _rnd.binomial(1, bias, (batch_size, target_length, element_size))
+
         encoder_input = np.insert(seq, 0, 0, axis=1)
+        pad = np.ones((batch_size, 1, element_size))
+        encoder_input = np.append(encoder_input, pad, axis=1)
         encoder_input = np.insert(encoder_input, 0, 0, axis=2)
         encoder_input[:, 0, 0] = 1
-        
+
         target = np.flip(seq, axis=1)
         aux_seq = np.ones((batch_size, target.shape[1], aux_in_dim)) * 0.5
         inputs = [encoder_input, aux_seq]
