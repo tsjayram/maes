@@ -24,17 +24,30 @@ def train_status_gen(threshold, report_interval):
     args = yield
     while True:
         epoch, train_length, loss = args
-        if (loss < best_loss) and (train_length > threshold):
-            improved_loss = True
-            best_loss = loss
-        else:
-            improved_loss = False
+        test_flag = False
+        improved_loss = False
 
-        if (epoch % report_interval == 0) or improved_loss:
+        if (loss < best_loss) and (train_length > threshold):
+            best_loss = loss
+            improved_loss = True
             test_flag = True
-        else:
-            test_flag = False
+
+        if (epoch % report_interval == 0) and (train_length > threshold):
+            test_flag = True
+
         args = (yield test_flag, improved_loss)
+
+        # if (loss < best_loss) and (train_length > threshold):
+        #     improved_loss = True
+        #     best_loss = loss
+        # else:
+        #     improved_loss = False
+        #
+        # if (epoch % report_interval == 0) or improved_loss:
+        #     test_flag = True
+        # else:
+        #     test_flag = False
+        # args = (yield test_flag, improved_loss)
 
 
 def pause():

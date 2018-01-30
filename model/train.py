@@ -47,6 +47,8 @@ def train_ntm(ntm_train, train_data_gen, train_file,
 
         if improved_loss:
             train_file.write(', *\n')
+        elif test_flag:
+            train_file.write(', $\n')
         else:
             train_file.write('\n')
 
