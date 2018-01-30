@@ -68,10 +68,27 @@ def build_ntm(element_size, N, M):
 @ex.capture
 def get_input(length, bias, element_size, _rnd):
     batch_size = 1
+
     inp = _rnd.binomial(1, bias, (batch_size, length, element_size))
-    inp = np.insert(inp, 0, 0, axis=1)
-    inp = np.insert(inp, 0, 0, axis=2)
-    inp[:, 0, 0] = 1
+
+    # marker
+    pad = np.zeros((batch_size, 1, element_size))
+    inp = np.append(inp, pad, axis=1)
+    pad = np.zeros((batch_size, length+1, 1))
+    inp = np.append(inp, pad, axis=2)
+    inp[: -1, -1] = 1
+
+    # inp = np.empty((batch_size, length + 1, element_size))
+    # inp[:, -1, :] = 0
+    # inp[:, :, -1] = 0
+    # inp[:, -1, -1] = 1
+    # inp[:, :-1, :-1] = _rnd.binomial(1, bias, (batch_size, length, element_size-1))
+
+    # control channel
+    # inp = np.insert(inp, 0, 0, axis=1)
+    # inp = np.insert(inp, 0, 0, axis=2)
+    # inp[:, 0, 0] = 1
+
     return inp
 
 
@@ -79,7 +96,7 @@ def get_input(length, bias, element_size, _rnd):
 def run(epochs, seed):
     plots_dir = make_plots_dir(seed)
     ntm = build_ntm()
-    print(ntm.pretty_print_str())
+    # print(ntm.pretty_print_str())
     inp = get_input()
     with h5py.File(MODEL_WTS, 'r') as f:
         epoch_keys = ['epoch_{:05d}'.format(num) for num in epochs]
@@ -90,9 +107,11 @@ def run(epochs, seed):
             weights = [grp[name] for name in grp if 'Encoder' in name]
             ntm.set_weights(weights)
             ntm_run_data = ntm.get_run_data(inp)
-            fig = plot_ntm_run(inp, ntm_run_data)
-            filename = '/fig_{}_{}.pdf'.format(key, time_now)
-            fig.savefig(plots_dir + filename, bbox_inches='tight')
+            print(ntm_run_data['memory'][0, -1, :, :])
+            # print(ntm_run_data['write'][0, :, 0, :])
+            # fig = plot_ntm_run(inp, ntm_run_data)
+            # filename = '/fig_{}_{}.pdf'.format(key, time_now)
+            # fig.savefig(plots_dir + filename, bbox_inches='tight')
             # fig.show()
             # matplotlib.pyplot.pause(1000)
-            matplotlib.pyplot.close(fig)
+            # matplotlib.pyplot.close(fig)
