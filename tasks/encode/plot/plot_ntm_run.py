@@ -6,7 +6,7 @@ from matplotlib.ticker import MaxNLocator
 
 def initialize_plot_area():
     plt.ioff()
-    fig = plt.figure(figsize=(20, 10))
+    fig = plt.figure(figsize=(10, 5))
     gs = GridSpec(50, 100)
 
     axes = {

@@ -37,17 +37,10 @@ def build_data_gen(ntm, batch_size, min_len, max_len, bias, element_size, _rnd):
 
     aux_in_dim = 1
     while True:
-        seq_length = _rnd.randint(low=min_len, high=max_len + 1)
-        seq = _rnd.binomial(1, bias, (batch_size, seq_length, element_size-1))
-
-        encoder_input = np.empty((batch_size, seq_length+1, element_size))
-        encoder_input[:, -1, :] = 0
-        encoder_input[:, :, -1] = 0
-        encoder_input[:, -1, -1] = 1
-        target = np.copy(encoder_input)
-
-        encoder_input[:, :-1, :-1] = seq
-        target[:, :-1, :-1] = np.flip(seq, axis=1)
+        target_length = _rnd.randint(low=min_len, high=max_len + 1)
+        seq = _rnd.binomial(1, bias, (batch_size, target_length, element_size-1))
+        encoder_input = seq
+        target = np.flip(seq, axis=1)
 
         # control channel
         encoder_input = np.insert(encoder_input, 0, 0, axis=1)
@@ -56,6 +49,6 @@ def build_data_gen(ntm, batch_size, min_len, max_len, bias, element_size, _rnd):
 
         aux_seq = np.ones((batch_size, target.shape[1], aux_in_dim)) * 0.5
         inputs = [encoder_input, aux_seq]
-        yield inputs, target, seq_length
+        yield inputs, target, target_length
 
 # end change ---
