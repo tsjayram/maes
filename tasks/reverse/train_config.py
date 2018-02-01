@@ -17,8 +17,8 @@ REPORT_INTERVAL = 100
 def train_test_config():
     seed = RANDOM_SEED
     epochs = 50000
-    N_train = 40
-    N_test = 128
+    N_train = 30
+    N_test = 80
     train_batch_size = 1
     test_batch_size = 64
     train_min_len = 3
@@ -38,7 +38,7 @@ def get_train_status(train_max_len, report_interval):
 
 @ex.config
 def encoder_weights():
-    use_frozen_wts = True
+    use_frozen_wts = False
     encoder_freeze_wts_file = LOG_ROOT + 'encode/' + ENCODER_FREEZE_TIME + '/model_weights.hdf5'
     encoder_epoch = ENCODER_EPOCH
 

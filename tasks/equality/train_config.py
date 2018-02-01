@@ -17,7 +17,7 @@ REPORT_INTERVAL = 100
 def train_test_config():
     seed = RANDOM_SEED
     epochs = 50000
-    N_train = 40
+    N_train = 30
     N_test = 80
     train_batch_size = 1
     test_batch_size = 64
