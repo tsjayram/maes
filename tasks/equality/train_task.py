@@ -2,18 +2,16 @@
 import logging
 import logging.config
 import os
-import numpy as np
 import arrow
 import h5py
 from ruamel.yaml import YAML
 
 from model.train import train_ntm
-from tasks.utils import get_exp_config, train_status_gen, pause
+from tasks.utils import get_exp_config, pause
 
 # change below based on task ----
-from tasks.equality.build import build_ntm, build_data_gen
 from tasks.equality.build import ex, TASK_NAME, LOG_ROOT
-import tasks.equality.train_config
+from tasks.equality.train_config import build_train, build_test, get_train_status
 # end change ---
 
 time_str = arrow.now().format('YYYY-MM-DD__hh_mm_ss_A')
@@ -37,38 +35,6 @@ with open(LOG_YAML, 'rt') as f:
 
 logger = logging.getLogger(TASK_NAME)
 ex.logger = logger
-
-
-@ex.capture
-def mem_freeze(ntm, use_frozen_wts, mem_freeze_wts_file, mem_epoch):
-    if use_frozen_wts:
-        epoch_key = 'epoch_{:05d}'.format(mem_epoch)
-        with h5py.File(mem_freeze_wts_file, 'r') as f:
-            print('In ', epoch_key)
-            grp = f[epoch_key]
-            weights = [np.array(grp[name]) for name in grp if 'Memorize' in name]
-            ntm.mem_freeze_weights(weights)
-
-
-@ex.capture
-def build_train(N_train, train_batch_size, train_min_len, train_max_len):
-    ntm = build_ntm(N=N_train)
-    mem_freeze(ntm)
-    data_gen = build_data_gen(ntm, train_batch_size, train_min_len, train_max_len)
-    return ntm, data_gen
-
-
-@ex.capture
-def build_test(N_test, test_batch_size, test_len):
-    ntm = build_ntm(N=N_test)
-    data_gen = build_data_gen(ntm, test_batch_size, test_len, test_len)
-    return ntm, data_gen
-
-
-@ex.capture
-def get_train_status(train_max_len, report_interval):
-    threshold = (train_max_len * 3) // 4
-    return train_status_gen(threshold, report_interval)
 
 
 @ex.automain
