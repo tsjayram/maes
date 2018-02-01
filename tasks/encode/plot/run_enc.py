@@ -19,8 +19,9 @@ TASK_NAME = 'encode'
 ex = Experiment(TASK_NAME)
 LOG_ROOT = '../../../logs/'
 
-time_str = '2018-01-20__10_46_34_AM'
+# time_str = '2018-01-20__10_46_34_AM'
 # time_str = '2018-01-28__12_40_36_AM'
+time_str = '2018-01-20__06_36_48_PM'
 
 LOG_DIR = LOG_ROOT + TASK_NAME + '/' + time_str + '/'
 MODEL_WTS = LOG_DIR + 'model_weights.hdf5'
@@ -46,8 +47,9 @@ def run_config():
     batch_size = 1
     length = 64
     bias = 0.5
-    epochs = [13151]
+    # epochs = [13151]
     # epochs = [23440]
+    epochs = [18991]
 
 
 @ex.capture
