@@ -43,9 +43,14 @@ def build_data_gen(ntm, batch_size, min_len, max_len, bias, element_size, _rnd):
         target = np.flip(seq, axis=1)
 
         # control channel
-        encoder_input = np.insert(encoder_input, 0, 0, axis=1)
-        encoder_input = np.insert(encoder_input, 0, 0, axis=2)
-        encoder_input[:, 0, 0] = 1
+        # encoder_input = np.insert(encoder_input, 0, 0, axis=1)
+        # encoder_input = np.insert(encoder_input, 0, 0, axis=2)
+        # encoder_input[:, 0, 0] = 1
+
+        # control channel
+        encoder_input = np.append(encoder_input, np.zeros((batch_size, 1, element_size)), axis=1)
+        encoder_input = np.append(encoder_input, np.zeros((batch_size, seq_length+1, 1)), axis=2)
+        encoder_input[:, -1, -1] = 1
 
         aux_seq = np.ones((batch_size, target.shape[1], aux_in_dim)) * 0.5
         inputs = [encoder_input, aux_seq]
