@@ -6,8 +6,8 @@ from tasks.utils import train_status_gen
 from tasks.reverse_attn.build import ex, LOG_ROOT
 from tasks.reverse_attn.build import build_ntm, build_data_gen
 
-ENCODER_FREEZE_TIME = '2018-01-28__12_40_36_AM'
-ENCODER_EPOCH = 27987
+ENCODER_FREEZE_TIME = '2018-02-01__06_25_28_PM'
+ENCODER_EPOCH = 16032
 
 RANDOM_SEED = 12345
 REPORT_INTERVAL = 100
@@ -38,7 +38,7 @@ def get_train_status(train_max_len, report_interval):
 
 @ex.config
 def encoder_weights():
-    use_frozen_wts = False
+    use_frozen_wts = True
     encoder_freeze_wts_file = LOG_ROOT + 'encode/' + ENCODER_FREEZE_TIME + '/model_weights.hdf5'
     encoder_epoch = ENCODER_EPOCH
 
