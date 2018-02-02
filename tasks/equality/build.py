@@ -32,7 +32,7 @@ def build_ntm(element_size, tm_state_units, is_cam, num_shift, N, M):
 @ex.capture
 def build_data_gen(ntm, batch_size, min_len, max_len, bias, element_size, _rnd):
     encoder_init_state, solver_init_state = ntm.init_state(batch_size)
-    init_state = encoder_init_state + solver_init_state[:-1]
+    init_state = encoder_init_state + solver_init_state
     yield init_state
 
     while True:

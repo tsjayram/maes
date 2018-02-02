@@ -6,7 +6,7 @@ from sacred import Experiment
 
 from tasks.encode.plot.encoder import NTMEncoder
 
-np.set_printoptions(precision=10, linewidth=200, suppress=True, floatmode='fixed')
+np.set_printoptions(precision=1, linewidth=250, suppress=True, floatmode='fixed')
 
 TASK_NAME = 'encode'
 ex = Experiment(TASK_NAME)
@@ -15,7 +15,8 @@ LOG_ROOT = '../../../logs/'
 # time_str = '2018-01-20__10_46_34_AM'
 # time_str = '2018-01-28__12_40_36_AM'
 # time_str = '2018-01-20__06_36_48_PM'
-time_str = '2018-02-01__05_51_53_PM'
+# time_str = '2018-02-01__05_51_53_PM'
+time_str = '2018-02-01__06_25_28_PM'
 
 LOG_DIR = LOG_ROOT + TASK_NAME + '/' + time_str + '/'
 MODEL_WTS = LOG_DIR + 'model_weights.hdf5'
@@ -42,7 +43,8 @@ def run_config():
     # epochs = [13151]
     # epochs = [23440]
     # epochs = [18991]
-    epochs = [15524]
+    # epochs = [15524]
+    epochs = [16032]
 
 
 @ex.capture
@@ -75,9 +77,11 @@ def get_inputs(length, bias, element_size, _rnd):
     inp = np.empty((batch_size, length, element_size))
     inp[:, :, :] = seq
 
-    inp2 = np.empty((batch_size, length+1, element_size))
-    inp2[:, :length, :] = seq
-    inp2[:, length, :] = inp[:, 0, :]
+    inp2 = np.flip(seq, axis=1)
+
+    # inp2 = np.empty((batch_size, length + 1, element_size))
+    # inp2[:, :length, :] = seq
+    # inp2[:, length, :] = inp[:, 0, :]
 
     # control channel
     inp = np.insert(inp, 0, 0, axis=1)
@@ -118,7 +122,12 @@ def run(epochs):
             weights = [grp[name] for name in grp if 'Encoder' in name]
             ntm.set_weights(weights)
             ntm_run_data = ntm.get_run_data(inp)
-            # print(ntm_run_data['memory'][0, -1, :, :])
+            mem = ntm_run_data['memory'][0, -1, :, :]
+            # print(np.transpose(mem))
             ntm_run_data2 = ntm.get_run_data(inp2)
-            # print(ntm_run_data2['memory'][0, -1, :, :])
-            print(ntm_run_data2['memory'][0, -1, :, :] - ntm_run_data['memory'][0, -1, :, :])
+            mem_2 = ntm_run_data2['memory'][0, -1, :, :]
+            # print(np.transpose(mem_2))
+            length = inp.shape[1] - 1
+            mem_flip_roll_2 = np.roll(np.flip(mem_2, axis=0), -length+4, axis=0)
+            # print(np.transpose(mem_flip_roll_2 - mem))
+            print(np.transpose(mem_flip_roll_2 - mem))
