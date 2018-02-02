@@ -1,0 +1,4 @@
+2018-02-01__07_33_34_AM
+batch_num,epoch,batch_acc
+1,epoch_49500,0.935992
+2,epoch_49500,0.875211

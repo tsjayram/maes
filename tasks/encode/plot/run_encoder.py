@@ -96,8 +96,6 @@ def run(epochs, seed):
             weights = [grp[name] for name in grp if 'Encoder' in name]
             ntm.set_weights(weights)
             ntm_run_data = ntm.get_run_data(inp)
-            # print(ntm_run_data['memory'][0, -1, :, :])
-            # print(ntm_run_data['write'][0, :, 0, :])
             fig = plot_ntm_run(inp, ntm_run_data)
             filename = '/fig_{}_{}.pdf'.format(key, time_now)
             fig.savefig(plots_dir + filename, bbox_inches='tight')

@@ -7,6 +7,7 @@ batch_num,epoch,batch_acc
 5,epoch_16032,0.999949
 6,epoch_16032,0.999953
 7,epoch_16032,1.000000
+<<<<<<< HEAD
 8,epoch_16032,0.999977
 9,epoch_16032,0.999930
 10,epoch_16032,0.985664
@@ -100,3 +101,5 @@ batch_num,epoch,batch_acc
 98,epoch_16032,0.999949
 99,epoch_16032,0.999973
 100,epoch_16032,0.999977
+=======
+>>>>>>> fee7ef2d4debe78840acd2b288249cb27d109c6b
