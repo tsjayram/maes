@@ -4,8 +4,8 @@ import arrow
 import h5py
 
 # change below based on task ----
-from tasks.reverse.build import build_ntm, build_data_gen
-from tasks.reverse.build import ex, TASK_NAME, LOG_ROOT
+from tasks.reverse_attn.build import build_ntm, build_data_gen
+from tasks.reverse_attn.build import ex, TASK_NAME, LOG_ROOT
 
 time_str = '2018-01-29__11_34_49_AM'
 

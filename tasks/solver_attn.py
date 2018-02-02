@@ -24,6 +24,7 @@ class NTMSolver(NTM):
         self.M = M
         self.name = name
         self._encoder_model = None
+        self.solver_state_indices = [0, 1, 3]  # everything except read and mem
 
     def _build_encoder_model(self):
         tm_state_units = 3
@@ -54,7 +55,8 @@ class NTMSolver(NTM):
         encoder_model = self.encoder_model
         tm_input_seq = encoder_model.inputs[0]
         input_state_encoder = encoder_model.inputs[1:]
-        encoder_states = encoder_model.outputs[3:]   # read, write attention and memory
+        encoder_state_write = encoder_model.outputs[-2]  # write attention ...
+        encoder_state_mem = encoder_model.outputs[-1]    # ... and memory
 
         n_read_heads = 1
         n_write_heads = 1
@@ -66,8 +68,13 @@ class NTMSolver(NTM):
                          name='NTM_Layer_Solver')
 
         tm_aux_seq = Input(shape=(None, self.aux_in_dim))
-        input_state_solve = [Input(shape=(s,)) for s in layer.state_size[:3]]
-        init_state = input_state_solve + encoder_states
+
+        sizes = [layer.state_size[j] for j in self.solver_state_indices]
+        input_state_solve = [Input(shape=(s,)) for s in sizes]
+        init_state = list(input_state_solve)  # make a shallow copy
+        init_state.insert(2, encoder_state_write)  # write of encoder => read attn of solver
+        init_state.append(encoder_state_mem)  # mem state of encoder => mem state of solver
+
         tm_output_seq = layer(tm_aux_seq, initial_state=init_state)
 
         ntm_inputs = [tm_input_seq, tm_aux_seq] + input_state_encoder + input_state_solve
@@ -89,4 +96,5 @@ class NTMSolver(NTM):
     def init_state(self, batch_size):
         encoder_init_state = self.encoder_layer.init_state(batch_size)
         solver_init_state = self.solver_layer.init_state(batch_size)
+        solver_init_state = [solver_init_state[j] for j in self.solver_state_indices]
         return encoder_init_state, solver_init_state

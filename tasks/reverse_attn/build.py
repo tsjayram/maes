@@ -1,10 +1,10 @@
 import numpy as np
 from sacred import Experiment
 
-from tasks.solver import NTMSolver
+from tasks.solver_attn import NTMSolver
 
 # change below based on task ----
-TASK_NAME = 'reverse'
+TASK_NAME = 'reverse_attn'
 ex = Experiment(TASK_NAME)
 LOG_ROOT = '../../logs/'
 
@@ -12,9 +12,9 @@ LOG_ROOT = '../../logs/'
 @ex.config
 def model_config():
     element_size = 8
-    tm_state_units = 3
+    tm_state_units = 5
     num_shift = 3
-    is_cam = True
+    is_cam = False
     M = 10
 
 
@@ -32,7 +32,7 @@ def build_ntm(element_size, tm_state_units, is_cam, num_shift, N, M):
 @ex.capture
 def build_data_gen(ntm, batch_size, min_len, max_len, bias, element_size, _rnd):
     encoder_init_state, solver_init_state = ntm.init_state(batch_size)
-    init_state = encoder_init_state + solver_init_state[:-1]
+    init_state = encoder_init_state + solver_init_state
     yield init_state
 
     aux_in_dim = 1

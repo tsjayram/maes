@@ -3,8 +3,8 @@ import h5py
 from tasks.utils import train_status_gen
 
 # change below based on task ----
-from tasks.reverse.build import ex, LOG_ROOT
-from tasks.reverse.build import build_ntm, build_data_gen
+from tasks.reverse_attn.build import ex, LOG_ROOT
+from tasks.reverse_attn.build import build_ntm, build_data_gen
 
 ENCODER_FREEZE_TIME = '2018-01-28__12_40_36_AM'
 ENCODER_EPOCH = 27987
@@ -17,7 +17,7 @@ REPORT_INTERVAL = 100
 def train_test_config():
     seed = RANDOM_SEED
     epochs = 50000
-    N_train = 30
+    N_train = 40
     N_test = 80
     train_batch_size = 1
     test_batch_size = 64
