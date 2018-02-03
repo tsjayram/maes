@@ -124,9 +124,4 @@ class NTMSolver(NTM):
         solver_init_state_rev = self.solver_layer_rev.init_state(batch_size)
         solver_init_state_rev = [solver_init_state_rev[j] for j in self.solver_state_indices_rev]
 
-        for elem in [encoder_init_state, solver_init_state_fwd, solver_init_state_rev]:
-            print('Length=', len(elem))
-            for array in elem:
-                print(array.shape)
-        input('pause')
         return encoder_init_state + solver_init_state_fwd + solver_init_state_rev
