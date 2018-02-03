@@ -90,4 +90,5 @@ class NTMSolver(NTM):
         encoder_init_state = self.encoder_layer.init_state(batch_size)
         solver_init_state = self.solver_layer.init_state(batch_size)
         solver_init_state = solver_init_state[:-1]
-        return encoder_init_state, solver_init_state
+        return encoder_init_state + solver_init_state
+
