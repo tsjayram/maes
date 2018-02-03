@@ -7,18 +7,18 @@ import h5py
 from tasks.recall.build import build_ntm, build_data_gen
 from tasks.recall.build import ex, TASK_NAME, LOG_ROOT
 
-time_str = '2018-01-28__03_05_31_PM'
+time_str = '2018-02-02__01_15_04_PM'
 
 
 @ex.config
 def run_config():
     seed = RANDOM_SEED
-    N = 68
+    N = 80
     batch_size = 32
     length = 64
     bias = 0.5
     num_batches = 100
-    epochs = [15524]
+    epochs = [4598]
 
 # end change ---
 
