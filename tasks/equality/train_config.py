@@ -19,7 +19,7 @@ def train_test_config():
     epochs = 50000
     N_train = 30
     N_test = 80
-    train_batch_size = 1
+    train_batch_size = 64
     test_batch_size = 64
     train_min_len = 3
     train_max_len = 20

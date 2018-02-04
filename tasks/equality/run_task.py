@@ -7,7 +7,7 @@ import h5py
 from tasks.equality.build import build_ntm, build_data_gen
 from tasks.equality.build import ex, TASK_NAME, LOG_ROOT
 
-time_str = '2018-01-29__11_34_49_AM'
+time_str = '2018-02-04__10_49_30_AM'
 
 
 @ex.config
@@ -18,7 +18,7 @@ def run_config():
     length = 64
     bias = 0.5
     num_batches = 100
-    epochs = [27500]
+    epochs = [16926]
 
 # end change ---
 
