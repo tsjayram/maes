@@ -1,7 +1,7 @@
 import numpy as np
 from sacred import Experiment
 
-from tasks.solver import NTMSolver
+from tasks.solver_reverse import NTMSolver
 
 # change below based on task ----
 TASK_NAME = 'reverse'
@@ -14,7 +14,7 @@ def model_config():
     element_size = 8
     tm_state_units = 3
     num_shift = 3
-    is_cam = True
+    is_cam = False
     M = 10
 
 
@@ -41,14 +41,9 @@ def build_data_gen(ntm, batch_size, min_len, max_len, bias, element_size, _rnd):
         target = np.flip(seq, axis=1)
 
         # control channel
-        # encoder_input = np.insert(encoder_input, 0, 0, axis=1)
-        # encoder_input = np.insert(encoder_input, 0, 0, axis=2)
-        # encoder_input[:, 0, 0] = 1
-
-        # control channel
-        encoder_input = np.append(encoder_input, np.zeros((batch_size, 1, element_size)), axis=1)
-        encoder_input = np.append(encoder_input, np.zeros((batch_size, seq_length+1, 1)), axis=2)
-        encoder_input[:, -1, -1] = 1
+        encoder_input = np.insert(encoder_input, 0, 0, axis=1)
+        encoder_input = np.insert(encoder_input, 0, 0, axis=2)
+        encoder_input[:, 0, 0] = 1
 
         aux_seq = np.ones((batch_size, target.shape[1], aux_in_dim)) * 0.5
         inputs = [encoder_input, aux_seq]
