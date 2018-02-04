@@ -6,8 +6,8 @@ from tasks.utils import train_status_gen
 from tasks.odd.build import ex, LOG_ROOT
 from tasks.odd.build import build_ntm, build_data_gen
 
-ENCODER_FREEZE_TIME = '2018-01-28__12_40_36_AM'
-ENCODER_EPOCH = 27987
+ENCODER_FREEZE_TIME = '2018-02-02__05_55_02_PM'
+ENCODER_EPOCH = 43100
 
 RANDOM_SEED = 12345
 REPORT_INTERVAL = 100
