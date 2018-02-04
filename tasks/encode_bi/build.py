@@ -1,7 +1,7 @@
 import numpy as np
 from sacred import Experiment
 
-from tasks.solver_bi import NTMSolver
+from tasks.encode_bi.solver import NTMSolver
 
 # change below based on task ----
 TASK_NAME = 'encode_bi'
