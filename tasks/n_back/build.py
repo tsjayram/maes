@@ -1,7 +1,7 @@
 import numpy as np
 from sacred import Experiment
 
-from tasks.solver import NTMSolver
+from tasks.n_back.solver import NTMSolver
 
 # change below based on task ----
 TASK_NAME = 'n_back'
@@ -13,18 +13,19 @@ LOG_ROOT = '../../logs/'
 def model_config():
     element_size = 8
     tm_state_units = 3
+    tm_solver_state_units = 12
     num_shift = 3
     is_cam = False
     M = 10
 
 
 @ex.capture
-def build_ntm(element_size, tm_state_units, is_cam, num_shift, N, M):
+def build_ntm(element_size, tm_state_units, tm_solver_state_units, is_cam, num_shift, N, M):
     in_dim = element_size + 1
     out_dim = 1
     aux_in_dim = element_size
     ret_seq = True
-    ntm = NTMSolver(in_dim, out_dim, aux_in_dim, tm_state_units,
+    ntm = NTMSolver(in_dim, out_dim, aux_in_dim, tm_state_units, tm_solver_state_units,
                     ret_seq, is_cam, num_shift, N, M)
     return ntm
 

@@ -1,7 +1,7 @@
 import numpy as np
 from sacred import Experiment
 
-from tasks.solver_reverse import NTMSolver
+from tasks.reverse.solver import NTMSolver
 
 # change below based on task ----
 TASK_NAME = 'reverse'
