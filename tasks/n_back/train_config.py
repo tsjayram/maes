@@ -16,10 +16,10 @@ REPORT_INTERVAL = 100
 @ex.config
 def train_test_config():
     seed = RANDOM_SEED
-    epochs = 50000
+    epochs = 100000
     N_train = 30
     N_test = 80
-    train_batch_size = 16
+    train_batch_size = 64
     test_batch_size = 64
     train_min_len = 3
     train_max_len = 20
