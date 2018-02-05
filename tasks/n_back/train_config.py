@@ -6,8 +6,8 @@ from tasks.utils import train_status_gen
 from tasks.n_back.build import ex, LOG_ROOT
 from tasks.n_back.build import build_ntm, build_data_gen
 
-ENCODER_FREEZE_TIME = '2018-01-20__10_46_34_AM'
-ENCODER_EPOCH = 12359
+ENCODER_FREEZE_TIME = '2018-02-02__05_55_02_PM'
+ENCODER_EPOCH = 43100
 
 RANDOM_SEED = 12345
 REPORT_INTERVAL = 100
@@ -17,8 +17,8 @@ REPORT_INTERVAL = 100
 def train_test_config():
     seed = RANDOM_SEED
     epochs = 100000
-    N_train = 30
-    N_test = 80
+    N_train = 40
+    N_test = 128
     train_batch_size = 64
     test_batch_size = 64
     train_min_len = 3
