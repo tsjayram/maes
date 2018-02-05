@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import h5py
 
-LOG_DIR = './reverse/2018-01-20__06_36_48_PM/'
+LOG_DIR = './encode/2018-01-20__10_46_34_AM/'
 FILE_MEM = LOG_DIR + 'model_weights.hdf5'
 FILE_ENC = LOG_DIR + 'model_weights_new.hdf5'
 
