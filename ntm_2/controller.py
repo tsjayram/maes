@@ -1,6 +1,6 @@
 from keras.layers import Input, Dense, Reshape, Concatenate
 from keras.models import Model
-from keras.activations import sigmoid, linear
+from keras.activations import sigmoid, relu
 
 
 class Controller():
@@ -9,7 +9,7 @@ class Controller():
         self.heads_flat_dim = n_heads * M
         tm_ctrl_in_dim = tm_in_dim + tm_state_units + self.heads_flat_dim
         tm_ctrl_inputs = Input(shape=(tm_ctrl_in_dim,))
-        tm_hidden = Dense(tm_ctrl_in_dim, activation=linear, trainable=output_trainable,
+        tm_hidden = Dense(tm_ctrl_in_dim, activation=relu, trainable=output_trainable,
                           name='Controller_hidden')(tm_ctrl_inputs)
         tm_output = Dense(tm_output_units, activation=sigmoid, trainable=output_trainable,
                           name='Controller_out')(tm_hidden)

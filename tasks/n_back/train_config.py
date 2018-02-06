@@ -38,7 +38,7 @@ def get_train_status(train_max_len, report_interval):
 
 @ex.config
 def encoder_weights():
-    use_frozen_wts = False
+    use_frozen_wts = True
     encoder_freeze_wts_file = LOG_ROOT + 'encode/' + ENCODER_FREEZE_TIME + '/model_weights.hdf5'
     encoder_epoch = ENCODER_EPOCH
 

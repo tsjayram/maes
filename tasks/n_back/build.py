@@ -13,7 +13,7 @@ LOG_ROOT = '../../logs/'
 def model_config():
     element_size = 8
     tm_state_units = 3
-    tm_solver_state_units = 5
+    tm_solver_state_units = 10
     num_shift = 3
     is_cam = False
     M = 10
