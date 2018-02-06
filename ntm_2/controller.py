@@ -13,6 +13,7 @@ class Controller():
                           name='Controller_hidden')(tm_ctrl_inputs)
         tm_output = Dense(tm_output_units, activation=sigmoid, trainable=output_trainable,
                           name='Controller_out')(tm_hidden)
+
         tm_state = Dense(tm_state_units, name='Controller_state')(tm_ctrl_inputs)
 
         self.controller = Model(tm_ctrl_inputs, [tm_output, tm_state])
