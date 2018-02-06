@@ -3,7 +3,7 @@ from keras.layers import Reshape, Flatten
 
 from ntm.memory import Memory
 from ntm.head import ReadHead, WriteHead
-from ntm.controller import Controller
+from ntm_2.controller import Controller
 
 
 class NTMCell(Layer):

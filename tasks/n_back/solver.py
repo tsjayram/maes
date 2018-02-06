@@ -2,7 +2,7 @@ from keras.layers import Input
 from keras.models import Model
 
 from model.ntm import NTM
-from ntm.ntm_layer import NTMLayer
+from ntm_2.ntm_layer import NTMLayer
 
 
 class NTMSolver(NTM):

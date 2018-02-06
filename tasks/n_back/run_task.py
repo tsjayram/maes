@@ -18,7 +18,7 @@ def run_config():
     length = 64
     bias = 0.5
     num_batches = 100
-    epochs = [27507]
+    epochs = [99400]
 
 # end change ---
 
@@ -62,6 +62,10 @@ def run(num_batches, epochs, seed):
 
         for n in range(1, num_batches+1):
             inputs, target, length = next(data_gen)
+            encoder_input, aux_seq = inputs
+            aux_seq = aux_seq[:, :, :]
+            inputs = [encoder_input, aux_seq]
+            target = target[:, :, :]
             for key in (x for x in epoch_keys if x in f):
                 print('In batch num = {}, {}'.format(n, key))
                 grp = f[key]

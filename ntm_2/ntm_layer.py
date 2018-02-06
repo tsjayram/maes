@@ -1,6 +1,6 @@
 import numpy as np
 from keras.layers import RNN
-from ntm.ntm_cell import NTMCell
+from ntm_2.ntm_cell import NTMCell
 
 
 class NTMLayer(RNN):
