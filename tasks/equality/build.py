@@ -43,6 +43,13 @@ def build_data_gen(ntm, batch_size, min_len, max_len, bias, element_size, _rnd):
         mask = _rnd.binomial(1, 0.5, (batch_size,))
         input_xor = _rnd.binomial(1, 0.5, seq.shape)
         input_xor = input_xor * mask[:, np.newaxis, np.newaxis]
+
+        # kill all except 1
+        # kill = np.zeros((batch_size, seq_length))
+        # index = _rnd.randint(0, seq_length, size=(batch_size,))
+        # kill[np.arange(batch_size), index] = 1
+        # input_xor = input_xor * mask[:, np.newaxis, np.newaxis] * kill[:, :, np.newaxis]
+
         aux_seq = np.logical_xor(seq, input_xor).astype(float)
 
         target = np.any(input_xor, axis=(1, 2))
