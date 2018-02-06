@@ -12,15 +12,16 @@ matplotlib.rcParams['image.interpolation'] = 'nearest'
 import h5py
 from sacred import Experiment
 
-from tasks.encode.plot.encoder import NTMEncoder
-from tasks.encode.plot.plot_ntm_run import plot_ntm_run
+from tasks.encode_bi.plot.encoder import NTMEncoder
+from tasks.encode_bi.plot.plot_ntm_run_2 import plot_ntm_run
 
-TASK_NAME = 'encode'
+TASK_NAME = 'encode_bi'
 ex = Experiment(TASK_NAME)
 LOG_ROOT = '../../../logs/'
 
 # time_str = '2018-01-20__10_46_34_AM'
-time_str = '2018-01-28__12_40_36_AM'
+# time_str = '2018-01-28__12_40_36_AM'
+time_str = '2018-02-02__05_55_02_PM'
 
 LOG_DIR = LOG_ROOT + TASK_NAME + '/' + time_str + '/'
 MODEL_WTS = LOG_DIR + 'model_weights.hdf5'
@@ -47,7 +48,8 @@ def run_config():
     length = 64
     bias = 0.5
     # epochs = [13151]
-    epochs = [23440]
+    # epochs = [23440]
+    epochs = [43100]
 
 
 @ex.capture
@@ -69,15 +71,10 @@ def build_ntm(element_size, N, M):
 @ex.capture
 def get_input(length, bias, element_size, _rnd):
     batch_size = 1
-
-    inp = np.empty((batch_size, length + 1, element_size + 1))
-    inp[:, :length, :element_size] = _rnd.binomial(1, bias, (batch_size, length, element_size))
-
-    # control channel
-    inp = np.insert(inp, 0, 0, axis=1)
+    seq = _rnd.binomial(1, bias, (batch_size, length, element_size))
+    inp = np.insert(seq, 0, 0, axis=1)
     inp = np.insert(inp, 0, 0, axis=2)
     inp[:, 0, 0] = 1
-
     return inp
 
 
