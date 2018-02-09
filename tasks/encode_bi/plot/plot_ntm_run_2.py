@@ -23,8 +23,9 @@ def initialize_plot_area():
     axes['input'].set_yticklabels([])
     axes['input'].set_ylabel('Word')
 
-    axes['memory'].set_xlabel('Data Vector Coordinates')
-    axes['memory'].set_ylabel('Memory Address')
+    axes['memory'].set_xlabel('Memory Word Position', fontsize=18)
+    axes['memory'].set_ylabel('Address', fontsize=18)
+    axes['memory'].tick_params(labelsize='xx-large')
 
     axes['write'].set_xlabel('Time')
     axes['write'].set_ylabel('Soft Attention')
