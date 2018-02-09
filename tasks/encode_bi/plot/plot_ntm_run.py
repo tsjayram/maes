@@ -6,7 +6,7 @@ from matplotlib.ticker import MaxNLocator
 
 def initialize_plot_area():
     plt.ioff()
-    fig = plt.figure(figsize=(10, 5))
+    fig = plt.figure(figsize=(20, 10))
     gs = GridSpec(50, 100)
 
     axes = {
@@ -49,7 +49,7 @@ def plot_ntm_run(inp, ntm_run_data):
     w_head_idx = 0
 
     plot_data = {
-        'input': np.transpose(inp[index]),
+        'input': np.transpose(inp[index, :, :]),
         'read': np.transpose(ntm_run_data['read'][index, :, r_head_idx, :]),
         'write': np.transpose(ntm_run_data['write'][index, :, w_head_idx, :]),
     }

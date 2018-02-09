@@ -13,7 +13,7 @@ import h5py
 from sacred import Experiment
 
 from tasks.encode_bi.plot.encoder import NTMEncoder
-from tasks.encode_bi.plot.plot_ntm_run_2 import plot_ntm_run
+from tasks.encode_bi.plot.plot_ntm_run import plot_ntm_run
 
 TASK_NAME = 'encode_bi'
 ex = Experiment(TASK_NAME)
@@ -72,6 +72,7 @@ def build_ntm(element_size, N, M):
 def get_input(length, bias, element_size, _rnd):
     batch_size = 1
     seq = _rnd.binomial(1, bias, (batch_size, length, element_size))
+
     inp = np.insert(seq, 0, 0, axis=1)
     inp = np.insert(inp, 0, 0, axis=2)
     inp[:, 0, 0] = 1
@@ -96,6 +97,6 @@ def run(epochs, seed):
             fig = plot_ntm_run(inp, ntm_run_data)
             filename = '/fig_{}_{}.pdf'.format(key, time_now)
             fig.savefig(plots_dir + filename, bbox_inches='tight')
-            fig.show()
-            matplotlib.pyplot.pause(1000)
+            # fig.show()
+            # matplotlib.pyplot.pause(1000)
             matplotlib.pyplot.close(fig)
