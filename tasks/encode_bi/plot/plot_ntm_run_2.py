@@ -23,8 +23,9 @@ def initialize_plot_area():
     axes['input'].set_xticklabels([])
     axes['input'].set_ylabel('Sequence Index')
 
-    axes['memory'].set_xlabel('Memory Word Position')
-    axes['memory'].set_ylabel('Address')
+    axes['memory'].set_xlabel('Memory Word Position', fontsize=18)
+    axes['memory'].set_ylabel('Address', fontsize=18)
+    axes['memory'].tick_params(labelsize='xx-large')
 
     axes['write'].set_xlabel('Time')
     axes['write'].set_ylabel('Attention')
