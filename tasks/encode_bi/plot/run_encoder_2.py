@@ -19,9 +19,9 @@ TASK_NAME = 'encode_bi'
 ex = Experiment(TASK_NAME)
 LOG_ROOT = '../../../logs/'
 
-time_str = '2018-01-20__10_46_34_AM'
+# time_str = '2018-01-20__10_46_34_AM'
 # time_str = '2018-01-28__12_40_36_AM'
-# time_str = '2018-02-02__05_55_02_PM'
+time_str = '2018-02-02__05_55_02_PM'
 
 LOG_DIR = LOG_ROOT + TASK_NAME + '/' + time_str + '/'
 MODEL_WTS = LOG_DIR + 'model_weights.hdf5'
@@ -47,9 +47,9 @@ def run_config():
     batch_size = 1
     length = 64
     bias = 0.5
-    epochs = [13151]
+    # epochs = [13151]
     # epochs = [23440]
-    # epochs = [43100]
+    epochs = [43100]
 
 
 @ex.capture
@@ -74,9 +74,14 @@ def get_input(length, bias, element_size, _rnd):
     seq = _rnd.binomial(1, bias, (batch_size, length, element_size))
     # seq = np.ones((batch_size, length, element_size))
 
-    inp = np.insert(seq, 0, 0, axis=1)
-    inp = np.insert(inp, 0, 0, axis=2)
+    inp = np.insert(seq, 0, 0, axis=2)
+    inp = np.insert(inp, 0, 0, axis=1)
     inp[:, 0, 0] = 1
+
+    # inp = np.zeros((batch_size, length+1, element_size+1))
+    # inp[:, :-1, :-1] = seq
+    # inp[:, -1, -1] = 1
+
     return inp
 
 
@@ -98,6 +103,6 @@ def run(epochs, seed):
             fig = plot_ntm_run(inp, ntm_run_data)
             filename = '/fig_{}_{}.pdf'.format(key, time_now)
             fig.savefig(plots_dir + filename, bbox_inches='tight')
-            fig.show()
-            matplotlib.pyplot.pause(1000)
+            # fig.show()
+            # matplotlib.pyplot.pause(1000)
             matplotlib.pyplot.close(fig)
